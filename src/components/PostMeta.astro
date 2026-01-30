@@ -31,6 +31,6 @@ function formatDateCustom(date: Date) {
   <div class="text-3.5">
     <!-- <span>{t(post.data.modDate ? 'updated_at' : 'posted_at')}</span> -->
     <time class="opacity-50">{formatDate(post.data.modDate ?? post.data.pubDate, 'MMM D')}</time>
-    {categoryList.map((category) => <span class="text-3.9 m-l-3 p-1 bg-sky:10 rounded" >{category}</span>)}
+    {categoryList.map((category) => <span class="text-2.9 m-l-3 p-1 bg-sky:10 rounded" >{category}</span>)}
   </div>
 </header>
