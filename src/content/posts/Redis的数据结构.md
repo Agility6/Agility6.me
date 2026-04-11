@@ -12,7 +12,7 @@ description: ''
 🚀 内容来自参考自**Redis设计与实现**
 
 ⚠️ 本篇文章主要介绍Redis3.0的数据结构，在Redis7.0数据类型与数据结构的关系有所不一致。
-![photo](../assets/redis数据结构/1.png)
+![photo](./_assets/redis数据结构/1.png)
 
 ## 介绍逻辑
 
@@ -33,7 +33,7 @@ description: ''
 
 ### 数据结构的定义
 
-![photo](../assets/redis数据结构/2.png)
+![photo](./_assets/redis数据结构/2.png)
 
 ### 字段的解释
 
@@ -53,7 +53,7 @@ description: ''
 ### 数据结构的定义
 
 - 由ListNode和List组成
-  ![photo](../assets/redis数据结构/3.png)
+  ![photo](./_assets/redis数据结构/3.png)
 
 ### 字段的解释
 
@@ -82,7 +82,7 @@ description: ''
 ### 数据结构的定义
 
 - 由哈希表和哈希节点组成，每个哈希节点保存了字典中的一个键值对
-  ![photo](../assets/redis数据结构/4.png)
+  ![photo](./_assets/redis数据结构/4.png)
 
 ### 字段的解释
 
@@ -120,7 +120,7 @@ description: ''
 ### 数据结构的定义
 
 - 跳跃表由跳跃表节点（zskiplistNode）和用于保存跳跃表节点的相关信息组成（zskiplist）
-  ![photo](../assets/redis数据结构/5.png)
+  ![photo](./_assets/redis数据结构/5.png)
 
 ### 字段的解释
 
@@ -148,7 +148,7 @@ description: ''
 
 ### 数据结构的定义
 
-![photo](../assets/redis数据结构/6.png)
+![photo](./_assets/redis数据结构/6.png)
 
 ### 字段的解释
 
@@ -167,7 +167,7 @@ description: ''
 
 ### 数据结构的定义
 
-![photo](../assets/redis数据结构/7.png)
+![photo](./_assets/redis数据结构/7.png)
 
 ### 字段的解释
 

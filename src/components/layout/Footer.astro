@@ -1,0 +1,79 @@
+---
+import { themeConfig } from '@/config'
+const today = new Date()
+const { variant = 'default' } = Astro.props
+---
+
+<footer data-variant={variant}>
+  <div class="footer-content">
+    <div class="copyright">
+      <span class="date">&copy; {today.getFullYear()}</span>
+      <span>{themeConfig.site.author}</span>
+    </div>
+    <div class="powered-by">
+      Powered by <a href="https://astro.build">Astro</a>
+    </div>
+  </div>
+</footer>
+<style>
+  footer {
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-light);
+    line-height: 1.75;
+    color: var(--text-secondary);
+    opacity: 0.75;
+    margin-top: 4rem;
+  }
+
+  .footer-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+  }
+
+  .copyright {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    white-space: nowrap;
+  }
+
+  .powered-by {
+    white-space: nowrap;
+  }
+
+  footer a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.2s ease-out;
+  }
+
+  footer a:hover {
+    color: var(--text-primary);
+  }
+
+  .copyright .date {
+    opacity: 1;
+  }
+
+  footer[data-variant='home'] {
+    max-width: 70rem;
+    padding-left: 6rem;
+  }
+
+  @media (max-width: 720px) {
+    footer,
+    footer[data-variant='home'] {
+      padding-left: 0;
+    }
+
+    .footer-content {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.35rem;
+    }
+  }
+</style>

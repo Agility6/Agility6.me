@@ -1,4 +1,8 @@
-import type { CollectionEntry } from 'astro:content'
+// Configuration types
+export * from './config.types'
 
-export type Post = CollectionEntry<'posts'>
-export * from './themeConfig.ts'
+// Content types
+export * from './content.types'
+
+// Component types
+export * from './component.types'

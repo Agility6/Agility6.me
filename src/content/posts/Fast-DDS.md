@@ -70,7 +70,7 @@ cmake ..  -DCMAKE_INSTALL_PREFIX=~/Fast-DDS/install
 cmake --build . --target install
 ```
 
-![Diagram](../assets/fastdds/install.png)
+![Diagram](./_assets/fastdds/install.png)
 
 4. 接下来我们需要使用`Fast DDS Gen`,这个工具是帮助我们实现`idl文件 --> c++代码`
    > 请确保环境中有jdk! Fast DDS-Gen supports Java versions from 11 to 19.
@@ -103,15 +103,15 @@ struct Test {
 ../Fast-DDS-Gen/scripts/fastddsgen -example CMake Text.idl
 ```
 
-![Diagram](../assets/fastdds/gen.png)
+![Diagram](./_assets/fastdds/gen.png)
 
 3. 添加分别在`TestPublisher.cxx`和`TestSubscriber.cxx`。分别代表了要输出什么 和 怎么输出
 
 - TestPublisher.cxx
-  ![Diagram](../assets/fastdds/Pub.png)
+  ![Diagram](./_assets/fastdds/Pub.png)
 
 - TestSubscriber.cxx
-  ![Diagram](../assets/fastdds/Sub.png)
+  ![Diagram](./_assets/fastdds/Sub.png)
 
 4. 构建
 
@@ -166,7 +166,7 @@ make
   ```
 
   - 再次执行
-    ![build](../assets/fastdds/test-build.png)
+    ![build](./_assets/fastdds/test-build.png)
 
 5. 执行`publisher | subscriber`
 
@@ -198,4 +198,4 @@ make
 
 ### DEMO
 
-![DOME](../assets/fastdds/Pub-Sub.png)
+![DOME](./_assets/fastdds/Pub-Sub.png)

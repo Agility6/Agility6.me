@@ -1,17 +1,11 @@
 {
   "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "old", "shud.in", "chiri"],
   "compilerOptions": {
-    "lib": ["esnext", "dom"],
-    "baseUrl": ".",
+    "strictNullChecks": true,
     "paths": {
-      "~/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
-  },
-  "include": [
-    "src/**/*.astro",
-    "src/**/*.ts",
-    ".astro/types.d.ts",
-    "**/*"
-  ],
-  "exclude": ["dist"]
+  }
 }

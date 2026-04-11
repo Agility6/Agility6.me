@@ -1,5 +1,5 @@
 ---
-title: Golang-SliceTrick
+title: Golang Slice Trick
 pubDate: 2024-11-30
 categories: ['Tech']
 description: ''
@@ -11,7 +11,7 @@ description: ''
 
 这个图十分有趣（**Everything is 「for」**）
 
-![IMG_5226](../assets/golangtrick/IMG_5226.PNG)
+![IMG_5226](./_assets/golangtrick/IMG_5226.PNG)
 
 尽管Golang并没有给开发者封装太多的方法，反而是通过一些Tricks可以实现你想要达到的效果
 
@@ -367,7 +367,7 @@ func main() {
 #### 去重
 
 看图！
-![Snipaste_2024-11-30_20-49-39](../assets/golangtrick/Snipaste_2024-11-30_20-49-39.png)
+![Snipaste_2024-11-30_20-49-39](./_assets/golangtrick/Snipaste_2024-11-30_20-49-39.png)
 
 ```go
 in := []int{3, 2, 1, 4, 3, 2, 1, 4, 1} // any item can be sorted

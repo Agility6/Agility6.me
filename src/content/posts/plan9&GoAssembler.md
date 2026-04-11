@@ -11,10 +11,6 @@ description: 'Rob Pike 对 Go 语言设计理念的阐述中，一直在强调 G
 
 > 在*计算机*里头*没有*任何黑*魔法*！— 浙江大学翁恺
 
-**Everything is 「for」 😈**
-
-![photo](../assets/plan9go/07.png)
-
 学习它你能得到什么？！
 
 1. 能够揭开语法糖底层是如何运作的
@@ -31,7 +27,7 @@ Go语言的Go Assembler（汇编器）是基于Plan 9风格进行实现（TOP级
 
 Plan 9是来自于大名鼎鼎的[贝尔实验室(Bell Labs)](https://en.wikipedia.org/wiki/Bell_Labs)，你所熟悉的[Unix](https://en.wikipedia.org/wiki/Unix)和C/C++都是出自该实验室，Plan 9其实一个分布式操作系统。其中[Rob_Pike](https://en.wikipedia.org/wiki/Rob_Pike)也是Plan 9的团队成员（下图是Plan9的吉祥物和Gopher有几分相似）
 
-![image](../assets/plan9go/01.png)
+![image](./_assets/plan9go/01.png)
 
 
 需要注意的是Plan 9是一个操作系统，其中它有一套自己的汇编指令也就是Plan 9汇编。虽然在Go中可以使用Plan 9汇编进行编码，但是在最终的执行上还是需要翻译成对应平台的汇编，这个过程是通过Go工具链。
@@ -66,7 +62,7 @@ MOVQ $-10, AX     // 8 bytes
 
 需要注意以下Plan 9与其他汇编操作数是相反的
 
-![image](../assets/plan9go/02.png)
+![image](./_assets/plan9go/02.png)
 
 #### 计算指令
 
@@ -232,7 +228,7 @@ TEXT pkgname·add(SB), NOSPLIT, $0-8
 
 1. `TEXT pkgname·add(SB), NOSPLIT, $0-8`
 
-  ![image](../assets/plan9go/03.png)
+  ![image](./_assets/plan9go/03.png)
 
 2. ` MOVQ a+0(FP), AX`：取`a`参数的值，`a`是从栈中`offset=0`处进行读取，栈帧指针`FP`加上偏移量`0`得到`a`的位置，`AX`是一个寄存器
 
@@ -262,7 +258,7 @@ TEXT pkgname·add(SB), NOSPLIT, $0-8
 
 以下是具体的栈帧布局，对于伪寄存器`SP`可以理解为用于模拟指针的变化过程，会随着栈帧的压栈和弹栈而动态变化
 
-![image](../assets/plan9go/04.png)
+![image](./_assets/plan9go/04.png)
 
 可以抽象出大致的布局，其实就是由「局部变量」、「参数」、「返回值」进行组合而成的。
 
@@ -272,7 +268,7 @@ TEXT pkgname·add(SB), NOSPLIT, $0-8
 
 2. 跳转到被调用函数入口处执行
 
-![image](../assets/plan9go/05.png)
+![image](./_assets/plan9go/05.png)
 
 > ‼️  需要注意在Golang早期的版本中，参数都是通过栈进行传入的，后续也支持了通过寄存器进行传入。
 
@@ -291,7 +287,7 @@ func add(a, b int) int {
 }
 ```
 
-![image](../assets/plan9go/06.png)
+![image](./_assets/plan9go/06.png)
 
 ## 总结 & 计划
 

@@ -1,0 +1,254 @@
+---
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import PostList from '@/components/widgets/PostList.astro'
+import ThemeToggle from '@/components/ui/ThemeToggle.astro'
+import { themeConfig } from '@/config'
+import { getSortedFilteredPosts } from '@/utils/draft'
+
+const posts = await getSortedFilteredPosts()
+const profile = {
+  intro: "Hi, I'm Merrick Tang.",
+  principle: 'The essence of magic is thought.',
+  socials: [
+    { label: 'GitHub', href: 'https://github.com/Agility6' },
+    { label: 'AnnularLabs', href: 'https://github.com/AnnularLabs' },
+    { label: 'Email', href: 'mailto:agility1013@gmail.com' }
+  ]
+}
+---
+
+<IndexLayout title={themeConfig.site.title} description={themeConfig.site.description} showHeader={false} width="84rem" centered={false}>
+  <div class="home-shell">
+    <nav class="home-nav" aria-label="Homepage sections">
+      <ul>
+        <li>
+          <a href="/">About</a>
+        </li>
+        <li>
+          <a href="/archive">Archive</a>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="home-main">
+      <div class="home-toolbar" aria-label="Quick links">
+        <div class="home-socials">
+          {
+            profile.socials.map((item, index) => (
+              <>
+                {index > 0 && <span aria-hidden="true">/</span>}
+                <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
+                  {item.label}
+                </a>
+              </>
+            ))
+          }
+        </div>
+        <ThemeToggle />
+      </div>
+
+      <section class="home-section about-section" id="about" aria-labelledby="about-title">
+        <p class="section-label">About</p>
+        <h1 class="home-title" id="about-title">{themeConfig.site.title}</h1>
+        <p>{profile.intro}</p>
+        <p>
+          This is a principle I believe in
+          <em>{profile.principle}</em>
+        </p>
+        <p>
+          Software Engineer
+        </p>
+        <p>
+          Email: 
+          <a href="mailto:agility1013@gmail.com"> agility1013@gmail.com</a>.
+        </p>
+      </section>
+
+      <section class="home-section archive-section" aria-labelledby="home-archive-title">
+        <p class="section-label" id="home-archive-title">Archive</p>
+        <PostList posts={posts} showTitle={false} />
+      </section>
+    </main>
+  </div>
+</IndexLayout>
+
+<style>
+  .home-shell {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+    max-width: 70rem;
+    margin: 0;
+  }
+
+  .home-nav {
+    width: 4.5rem;
+    flex: 0 0 4.5rem;
+    padding-right: 1rem;
+  }
+
+  .home-nav ul {
+    position: sticky;
+    top: 6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: right;
+  }
+
+  .home-nav li + li {
+    margin-top: 0.3rem;
+  }
+
+  .home-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+
+  .home-nav a:hover {
+    color: var(--text-primary);
+  }
+
+  .home-main {
+    position: relative;
+    flex: 1;
+    max-width: 56rem;
+    padding-left: 2.5rem;
+  }
+
+  .home-main::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+  }
+
+  .home-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    min-height: 1.5rem;
+  }
+
+  .home-socials {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    line-height: 1.7;
+  }
+
+  .home-socials a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .home-socials a:hover {
+    color: var(--text-primary);
+  }
+
+  .home-socials span {
+    color: var(--text-tertiary);
+  }
+
+  :global(.home-toolbar .theme-toggle) {
+    padding-left: 0;
+    margin-left: 0.15rem;
+  }
+
+  .home-section {
+    width: 100%;
+  }
+
+  .home-section + .home-section {
+    margin-top: 3.5rem;
+  }
+
+  .section-label {
+    margin: 0 0 1rem;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .home-title {
+    margin: 0 0 1rem;
+    color: var(--text-primary);
+    font-family: var(--article-serif);
+    font-size: clamp(1.6rem, 1.45rem + 0.55vw, 1.95rem);
+    line-height: 1.12;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+
+  .about-section p:not(.section-label) {
+    margin: 0 0 0.95rem;
+    font-size: 0.9375rem;
+    line-height: 1.78;
+    color: color-mix(in srgb, var(--text-primary) 94%, black 6%);
+  }
+
+  .about-section em {
+    font-family: var(--article-serif);
+    font-size: 1em;
+  }
+
+  .about-section a {
+    color: var(--text-primary);
+    text-decoration: none;
+  }
+
+  .about-section a:hover {
+    text-decoration: underline;
+  }
+
+  @media (max-width: 720px) {
+    .home-shell {
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    .home-nav {
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .home-nav ul {
+      position: static;
+      display: flex;
+      gap: 0.9rem;
+      text-align: left;
+    }
+
+    .home-nav li + li {
+      margin-top: 0;
+    }
+
+    .home-main {
+      max-width: none;
+      padding-left: 0;
+    }
+
+    .home-main::before {
+      display: none;
+    }
+
+    .home-toolbar {
+      justify-content: flex-start;
+      gap: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>

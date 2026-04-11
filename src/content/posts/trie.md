@@ -1,6 +1,6 @@
 ---
 external: false
-title: Trie树
+title: Trie Tree
 pubDate: 2023-10-15
 categories: ['Tech']
 description: ''
@@ -21,7 +21,7 @@ description: ''
 
 - 视图
 
-  ![trie图解](../assets/trie/trie图解.png)
+  ![trie图解](./_assets/trie/trie图解.png)
 
 - 最后查找存在多少个`ab`字符串，只需要取出`b`字符对应的个数就行了
 
