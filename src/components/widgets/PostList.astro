@@ -1,0 +1,148 @@
+---
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
+import type { PostListProps } from '@/types'
+
+const { posts, showTitle = true } = Astro.props as PostListProps
+const categoryOrder = ['Tech', 'Thought', 'Uncategorized']
+const categoryLabels: Record<string, string> = {
+  Tech: 'Research/Technology',
+  Thought: 'Thought',
+  Uncategorized: 'Archive'
+}
+const groupedPosts = Object.entries(
+  posts.reduce<Record<string, typeof posts>>((acc, post) => {
+    const category = post.data.categories?.[0] || 'Uncategorized'
+    acc[category] ??= []
+    acc[category].push(post)
+    return acc
+  }, {})
+)
+  .sort(([left], [right]) => {
+    const leftIndex = categoryOrder.indexOf(left)
+    const rightIndex = categoryOrder.indexOf(right)
+    return (leftIndex === -1 ? Number.MAX_SAFE_INTEGER : leftIndex) - (rightIndex === -1 ? Number.MAX_SAFE_INTEGER : rightIndex)
+  })
+---
+
+<div class:list={['post-directory', { 'without-title': !showTitle }]}>
+  {showTitle && <h2 class="directory-title" id="archive-title">Archive</h2>}
+  {
+    groupedPosts.map(([category, categoryPosts]) => (
+      <section class="category-group" id={`category-${category.toLowerCase().replace(/\s+/g, '-')}`}>
+        <h3 class="category-head">{categoryLabels[category] || category}</h3>
+
+        <ul>
+          {categoryPosts.map((post) => (
+            <li>
+              <a href={`/${post.id}/`} class="post-item">
+                <p class="date font-features">
+                  <FormattedDate date={post.data.pubDate} context="list" />
+                </p>
+                <p class="title">{post.data.title}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+</div>
+
+<style>
+  .post-directory {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .post-directory.without-title {
+    gap: 1.5rem;
+  }
+
+  .directory-title {
+    margin: 0;
+    font-family: var(--article-serif);
+    font-size: clamp(1.12rem, 1.04rem + 0.28vw, 1.3rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    font-weight: 600;
+    padding-bottom: 0.95rem;
+    border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 10%, transparent);
+  }
+
+  .category-group {
+    scroll-margin-top: 4.5rem;
+    width: 100%;
+  }
+
+  .category-head {
+    margin: 0;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+  }
+
+  ul {
+    padding: 0;
+    margin: 0.75rem 0 0;
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .post-item {
+    color: var(--text-primary);
+    display: grid;
+    grid-template-columns: 6.5rem minmax(0, 1fr);
+    gap: 1rem;
+    align-items: baseline;
+    text-decoration: none;
+    padding: 0.65rem 0;
+    border-bottom: 1px solid color-mix(in srgb, var(--text-primary) 6%, transparent);
+    transition:
+      color 0.15s ease-out,
+      border-color 0.15s ease-out;
+  }
+
+  .post-item:hover {
+    color: color-mix(in srgb, var(--text-primary) 88%, black 12%);
+    border-color: color-mix(in srgb, var(--text-primary) 18%, transparent);
+  }
+
+  .title {
+    margin: 0;
+    min-width: 0;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    letter-spacing: 0;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .date {
+    margin: 0;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    font-size: 0.72rem;
+    text-align: left;
+  }
+
+  @media (max-width: 720px) {
+    .post-item {
+      grid-template-columns: 1fr;
+      gap: 0.35rem;
+    }
+
+    .title {
+      font-size: 0.98rem;
+    }
+  }
+</style>

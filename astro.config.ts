@@ -1,44 +1,46 @@
+import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
-import swup from '@swup/astro'
-import robotsTxt from 'astro-robots-txt'
-import { defineConfig } from 'astro/config'
-import rehypeKatex from 'rehype-katex'
 import remarkMath from 'remark-math'
-import UnoCSS from 'unocss/astro'
-import { themeConfig } from './src/.config'
+import remarkDirective from 'remark-directive'
+import rehypeKatex from 'rehype-katex'
+import remarkEmbeddedMedia from './src/plugins/remark-embedded-media.mjs'
+import remarkReadingTime from './src/plugins/remark-reading-time.mjs'
+import rehypeCleanup from './src/plugins/rehype-cleanup.mjs'
+import rehypeImageProcessor from './src/plugins/rehype-image-processor.mjs'
+import rehypeCopyCode from './src/plugins/rehype-copy-code.mjs'
+import remarkTOC from './src/plugins/remark-toc.mjs'
+import { themeConfig } from './src/config'
+import { imageConfig } from './src/utils/image-config'
+import path from 'path'
+import netlify from '@astrojs/netlify'
 
-// https://astro.build/config
 export default defineConfig({
+  adapter: netlify(), // Set adapter for deployment, or set `linkCard` to `false` in `src/config.ts`
   site: themeConfig.site.website,
-  prefetch: true,
-  base: '/',
-  markdown: {
-    remarkPlugins: [
-      remarkMath,
-    ],
-    rehypePlugins: [
-      rehypeKatex,
-    ],
-    shikiConfig: {
-      theme: 'dracula',
-      wrap: true,
-    },
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/sharp',
+      config: imageConfig
+    }
   },
-  integrations: [
-    UnoCSS({ injectReset: true }),
-    mdx({}),
-    robotsTxt(),
-    sitemap(),
-    swup({
-      theme: false,
-      animationClass: 'transition-swup-',
-      cache: true,
-      preload: true,
-      accessibility: true,
-      smoothScrolling: true,
-      updateHead: true,
-      updateBodyClass: true,
-    }),
-  ],
+  markdown: {
+    shikiConfig: {
+      theme: 'css-variables',
+      wrap: false
+    },
+    remarkPlugins: [remarkMath, remarkDirective, remarkEmbeddedMedia, remarkReadingTime, remarkTOC],
+    rehypePlugins: [rehypeKatex, rehypeCleanup, rehypeImageProcessor, rehypeCopyCode]
+  },
+  integrations: [mdx(), sitemap()],
+  vite: {
+    resolve: {
+      alias: {
+        '@': path.resolve('./src')
+      }
+    }
+  },
+  devToolbar: {
+    enabled: false
+  }
 })

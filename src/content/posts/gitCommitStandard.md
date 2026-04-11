@@ -1,5 +1,4 @@
 ---
-external: false
 title: 关于Git Commit的信息
 pubDate: 2023-04-09
 categories: ['Tech']

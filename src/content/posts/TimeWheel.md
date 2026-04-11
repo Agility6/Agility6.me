@@ -17,7 +17,7 @@ description: ''
 
 ### 单层级时间轮
 
-![photo](../assets/TimeWheel/Snipaste_2024-05-25_20-10-14.png)
+![photo](./_assets/TimeWheel/Snipaste_2024-05-25_20-10-14.png)
 
 定时任务是用时间轮进行实现的，那么它是如何去组织数据的呢？
 
@@ -27,7 +27,7 @@ description: ''
 
 ### 多层级时间轮
 
-![photo](../assets/TimeWheel/Snipaste_2024-05-25_20-17-25.png)
+![photo](./_assets/TimeWheel/Snipaste_2024-05-25_20-17-25.png)
 
 按照任务的**轻重缓急**来进行层次划分的，当我们的任务是在秒这个单位下需要执行的，那么只需要放在前60秒即可，那么如果任务是分、时单位下，那么只需要放在对应的层级即可。对比单层级时间轮，多层级时间轮可以**减少比较的次数**，因此可以提升性能。（避免任务的轮询）
 
@@ -35,7 +35,7 @@ description: ''
 
 多层级时间轮是如何进行运作的呢？
 
-![photo](../assets/TimeWheel/Snipaste_2024-05-25_20-27-14.png)
+![photo](./_assets/TimeWheel/Snipaste_2024-05-25_20-27-14.png)
 
 当我们的秒针走完了60秒之后，分针相对于应该移动一格，这时候需要将分钟对应时刻的任务，映射到第一层级中。同理如果移动到时针，那么将任务，映射到分针当中。
 
@@ -90,8 +90,8 @@ unlock()
 
   - 只需要根据`TaskElement`中的`key`即可
 
-![photo](../assets/TimeWheel/Snipaste_2024-05-26_00-11-55.png)
-![photo](../assets/TimeWheel/Snipaste_2024-05-26_00-16-24.png)
+![photo](./_assets/TimeWheel/Snipaste_2024-05-26_00-11-55.png)
+![photo](./_assets/TimeWheel/Snipaste_2024-05-26_00-16-24.png)
 
 [代码实现](https://github.com/AnnularLabs/java-timewheel)
 

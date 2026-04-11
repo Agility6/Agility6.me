@@ -1,0 +1,194 @@
+---
+import '@/styles/global.css'
+import type { PostLayoutProps } from '@/types'
+import FormattedDate from '@/components/widgets/FormattedDate.astro'
+import FootnoteScroll from '@/components/widgets/FootnoteScroll.astro'
+import BaseHead from '@/components/layout/BaseHead.astro'
+import Footer from '@/components/layout/Footer.astro'
+import TableOfContents from '@/components/ui/TableOfContents.astro'
+import GradientMask from '@/components/ui/GradientMask.astro'
+import ImageOptimizer from '@/components/ui/ImageOptimizer.astro'
+import ImageViewer from '@/components/ui/ImageViewer.astro'
+import GitHubCard from '@/components/ui/GitHubCard.astro'
+import LinkCard from '@/components/ui/LinkCard.astro'
+import NeoDBCard from '@/components/ui/NeoDBCard.astro'
+import XPOST from '@/components/ui/XPOST.astro'
+import CopyCode from '@/components/ui/CopyCode.astro'
+import BaseLayout from '@/layouts/BaseLayout.astro'
+
+import { themeConfig } from '@/config'
+
+const { title, pubDate, readingTime, toc } = Astro.props as PostLayoutProps
+
+const postSlug = Astro.url.pathname.split('/').filter(Boolean).pop() || ''
+const ogImage = `/open-graph/${postSlug}.png`
+const postWidth = themeConfig.post.contentWidth || themeConfig.general.contentWidth
+---
+
+<BaseLayout
+  title={`${title} · ${themeConfig.site.title}`}
+  description={themeConfig.site.description}
+  type="post"
+  width="84rem"
+  centered={false}
+>
+  <BaseHead
+    title={`${title} · ${themeConfig.site.title}`}
+    description={themeConfig.site.description}
+    ogImage={ogImage}
+    slot="head"
+  />
+  <div class="post-container">
+    <div class="post-shell">
+      <nav class="post-nav" aria-label="Site sections">
+        <ul>
+          <li>
+            <a href="/">About</a>
+          </li>
+          <li>
+            <a href="/archive">Archive</a>
+          </li>
+        </ul>
+      </nav>
+
+      <main class="post-main" style={`--post-column-width: ${postWidth};`}>
+        <GradientMask />
+        <div class="prose">
+          {themeConfig.post.toc && <TableOfContents toc={toc} />}
+          <div class="title">
+            <h1>{title}</h1>
+            <div class="date">
+              <FormattedDate date={pubDate} context="post" />
+              {
+                themeConfig.post.readingTime && readingTime && (
+                  <span class="reading-time">
+                    <span class="separator">·</span>
+                    {readingTime.text}
+                  </span>
+                )
+              }
+            </div>
+          </div>
+          <article class="content">
+            <slot />
+          </article>
+        </div>
+      </main>
+    </div>
+    <ImageOptimizer />
+    <FootnoteScroll />
+    <CopyCode />
+    <GitHubCard />
+    <XPOST />
+    <NeoDBCard />
+    {themeConfig.post.imageViewer && <ImageViewer />}
+    {themeConfig.post.linkCard && <LinkCard />}
+    {themeConfig.general.footer && <Footer />}
+  </div>
+</BaseLayout>
+
+<style>
+  .post-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .post-shell {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+    max-width: 70rem;
+    margin: 0;
+    flex: 1;
+  }
+
+  .post-nav {
+    width: 4.5rem;
+    flex: 0 0 4.5rem;
+    padding-right: 1rem;
+  }
+
+  .post-nav ul {
+    position: sticky;
+    top: 6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: right;
+  }
+
+  .post-nav li + li {
+    margin-top: 0.3rem;
+  }
+
+  .post-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+
+  .post-nav a:hover {
+    color: var(--text-primary);
+  }
+
+  .post-main {
+    position: relative;
+    flex: 1;
+    max-width: 56rem;
+    padding-left: 2.5rem;
+  }
+
+  .post-main::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+  }
+
+  .post-main .prose {
+    max-width: var(--post-column-width);
+  }
+
+  @media (max-width: 720px) {
+    .post-shell {
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    .post-nav {
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .post-nav ul {
+      position: static;
+      display: flex;
+      gap: 0.9rem;
+      text-align: left;
+    }
+
+    .post-nav li + li {
+      margin-top: 0;
+    }
+
+    .post-main {
+      max-width: none;
+      padding-left: 0;
+    }
+
+    .post-main::before {
+      display: none;
+    }
+
+    .post-main .prose {
+      max-width: none;
+    }
+  }
+</style>

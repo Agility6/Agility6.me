@@ -1,56 +1,186 @@
 ---
-import LayoutDefault from '~/layouts/LayoutDefault.astro'
-import type { Post } from '~/types'
-import { formatDate, getPosts } from '~/utils'
+import IndexLayout from '@/layouts/IndexLayout.astro'
+import PostList from '@/components/widgets/PostList.astro'
+import ThemeToggle from '@/components/ui/ThemeToggle.astro'
+import { themeConfig } from '@/config'
+import { getSortedFilteredPosts } from '@/utils/draft'
 
-const posts = await getPosts(true)
-
-const yearMap = getYearMap(posts)
-
-interface ListItem {
-  title: string
-  href: string
-  date: string
-}
-
-function getYearMap(posts: Post[]) {
-  const result = new Map<number, ListItem[]>()
-  for (const post of posts) {
-    const year = (post.data.pubDate ?? new Date()).getFullYear()
-    const posts = result.get(year) ?? []
-    posts.push(getListItem(post))
-    result.set(year, posts)
-  }
-  return Array.from(result.entries())
-}
-
-function getListItem(post: Post): ListItem {
-  return {
-    title: post.data.title,
-    href: `/posts/${post.id}/`,
-    date: formatDate(post.data.pubDate, 'MMM D'), // Updated format
-  }
-}
+const posts = await getSortedFilteredPosts()
+const socials = [
+  { label: 'GitHub', href: 'https://github.com/Agility6' },
+  { label: 'AnnularLabs', href: 'https://github.com/AnnularLabs' },
+  { label: 'Email', href: 'mailto:agility1013@gmail.com' }
+]
 ---
 
-<LayoutDefault>
-  <div flex="~ col gap-4">
-    {
-      yearMap.map(([year, posts]) => (
-        <section>
-          <h2 class="post-title text-4xl m-b-6 m-t-8">{year}</h2>
-          <ul class="pl-4" flex="~ col gap-4">
-            {posts.map(({ title, href, date }) => (
-              <li>
-                <div class="post-title">
-                  <a href={href} class="text-base">{title}</a>
-                  <time class="font-size-3.2 opacity-50">{date}</time>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </section>
-      ))
-    }
+<IndexLayout title={`Archive · ${themeConfig.site.title}`} description={themeConfig.site.description} showHeader={false} width="84rem" centered={false}>
+  <div class="archive-shell">
+    <nav class="archive-nav" aria-label="Site sections">
+      <ul>
+        <li>
+          <a href="/">About</a>
+        </li>
+        <li>
+          <a href="/archive" aria-current="page">Archive</a>
+        </li>
+      </ul>
+    </nav>
+
+    <main class="archive-main">
+      <div class="archive-toolbar" aria-label="Quick links">
+        <div class="archive-socials">
+          {
+            socials.map((item, index) => (
+              <>
+                {index > 0 && <span aria-hidden="true">/</span>}
+                <a href={item.href} target={item.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
+                  {item.label}
+                </a>
+              </>
+            ))
+          }
+        </div>
+        <ThemeToggle />
+      </div>
+
+      <section class="archive-section">
+        <PostList posts={posts} />
+      </section>
+    </main>
   </div>
-</LayoutDefault>
+</IndexLayout>
+
+<style>
+  .archive-shell {
+    display: flex;
+    align-items: flex-start;
+    gap: 0;
+    width: 100%;
+    max-width: 70rem;
+    margin: 0;
+  }
+
+  .archive-nav {
+    width: 4.5rem;
+    flex: 0 0 4.5rem;
+    padding-right: 1rem;
+  }
+
+  .archive-nav ul {
+    position: sticky;
+    top: 6rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    text-align: right;
+  }
+
+  .archive-nav li + li {
+    margin-top: 0.3rem;
+  }
+
+  .archive-nav a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.84rem;
+    line-height: 1.7;
+  }
+
+  .archive-nav a:hover,
+  .archive-nav a[aria-current='page'] {
+    color: var(--text-primary);
+  }
+
+  .archive-main {
+    position: relative;
+    flex: 1;
+    max-width: 56rem;
+    padding-left: 2.5rem;
+  }
+
+  .archive-main::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    background: color-mix(in srgb, var(--text-primary) 10%, transparent);
+  }
+
+  .archive-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    min-height: 1.5rem;
+  }
+
+  .archive-socials {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    flex-wrap: wrap;
+    color: var(--text-secondary);
+    font-size: 0.78rem;
+    line-height: 1.7;
+  }
+
+  .archive-socials a {
+    color: var(--text-secondary);
+    text-decoration: none;
+  }
+
+  .archive-socials a:hover {
+    color: var(--text-primary);
+  }
+
+  .archive-socials span {
+    color: var(--text-tertiary);
+  }
+
+  :global(.archive-toolbar .theme-toggle) {
+    padding-left: 0;
+    margin-left: 0.15rem;
+  }
+
+  @media (max-width: 720px) {
+    .archive-shell {
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    .archive-nav {
+      width: 100%;
+      padding-right: 0;
+      margin-bottom: 1.5rem;
+    }
+
+    .archive-nav ul {
+      position: static;
+      display: flex;
+      gap: 0.9rem;
+      text-align: left;
+    }
+
+    .archive-nav li + li {
+      margin-top: 0;
+    }
+
+    .archive-main {
+      max-width: none;
+      padding-left: 0;
+    }
+
+    .archive-main::before {
+      display: none;
+    }
+
+    .archive-toolbar {
+      justify-content: flex-start;
+      gap: 0.7rem;
+      margin-bottom: 1.5rem;
+    }
+  }
+</style>
