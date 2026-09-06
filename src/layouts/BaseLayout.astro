@@ -3,6 +3,7 @@ import { themeConfig } from '@/config'
 import { ClientRouter } from 'astro:transitions'
 import ThemeManager from '@/components/ui/ThemeManager.astro'
 import TransitionWrapper from '@/components/layout/TransitionWrapper.astro'
+import HedwigPet from '@/components/widgets/HedwigPet.astro'
 import type { LayoutProps } from '@/types'
 
 type Props = LayoutProps
@@ -42,6 +43,8 @@ const finalWidth = shouldUseCustomWidth ? `${widthValue}rem` : '25rem'
         </div>
       )
     }
+
+    <HedwigPet />
 
     <script is:inline define:vars={{ fadeAnimation }}>
       if (!fadeAnimation) {
